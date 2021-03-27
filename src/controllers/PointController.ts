@@ -24,7 +24,7 @@ class PointController {
       longitude,
       city,
       uf,
-      image: 'str_image'
+      image: 'https://images.unsplash.com/photo-1543083477-4f785aeafaa9?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=400&q=60'
     }
   
     const insertedIds = await trx('points').insert(point, 'id')
