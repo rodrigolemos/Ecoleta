@@ -39,6 +39,8 @@ class PointController {
     })
   
     await trx('point_items').insert(pointItems)
+
+    await trx.commit()
   
     return response.status(201).send({
       id: point_id,
