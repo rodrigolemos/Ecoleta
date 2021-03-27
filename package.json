@@ -6,7 +6,8 @@
   "scripts": {
     "test": "test",
     "start": "nodemon src/app.ts",
-    "knex:migrate": "knex migrate:latest --knexfile knexfile.ts migrate:latest"
+    "knex:migrate": "knex --knexfile knexfile.ts migrate:latest",
+    "knex:seed": "knex --knexfile knexfile.ts seed:run"
   },
   "author": "Rodrigo Lemos",
   "license": "ISC",
