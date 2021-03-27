@@ -15,8 +15,8 @@ class PointController {
     } = request.body
   
     const trx = await connection.transaction()
-  
-    const lastInserted = await trx('points').insert({
+
+    const point = {
       name,
       email,
       whatsapp,
@@ -25,7 +25,9 @@ class PointController {
       city,
       uf,
       image: 'str_image'
-    })
+    }
+  
+    const lastInserted = await trx('points').insert(point)
   
     const point_id = lastInserted[0]
   
@@ -39,7 +41,8 @@ class PointController {
     await trx('point_items').insert(pointItems)
   
     return response.status(201).send({
-      message: 'success'
+      id: point_id,
+      ...point      
     })
   }
 }
