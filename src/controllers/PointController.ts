@@ -45,6 +45,20 @@ class PointController {
       ...point      
     })
   }
+
+  async show(request: Request, response: Response) {
+    const { id } = request.params
+
+    const point = await connection('points').where('id', id).first()
+
+    if (!point) {
+      return response.status(404).send({
+        message: 'Point not found'
+      })
+    }
+
+    return response.status(200).send(point)
+  }
 }
 
 export default new PointController()
