@@ -27,13 +27,13 @@ class PointController {
       image: 'str_image'
     }
   
-    const lastInserted = await trx('points').insert(point)
+    const insertedIds = await trx('points').insert(point, 'id')
   
-    const point_id = lastInserted[0]
+    const point_id = insertedIds[0]
   
-    const pointItems = items.map((item: number) => {
+    const pointItems = items.map((item_id: number) => {
       return {
-        item,
+        item_id,
         point_id
       }
     })
@@ -57,7 +57,27 @@ class PointController {
       })
     }
 
-    return response.status(200).send(point)
+    const items = await connection('items')
+    .join('point_items', 'items.id', '=', 'point_items.item_id')
+    .where('point_items.point_id', id)
+  
+    return response.status(200).send({ point, items })
+  }
+
+  async index(request: Request, response: Response) {
+    const { city, uf, items } = request.query
+
+    const parsedItems = String(items).split(',').map(item => Number(item.trim()))
+
+    const points = await connection('points')
+    .join('point_items', 'points.id', '=', 'point_items.point_id')
+    .whereIn('point_items.item_id', parsedItems)
+    .where('city', String(city))
+    .where('uf', String(uf))
+    .distinct()
+      .select('points.*')
+
+    return response.status(200).send(points)
   }
 }
 
